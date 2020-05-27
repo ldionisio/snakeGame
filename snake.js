@@ -1,30 +1,28 @@
-
+//variables globales
 var width = 40;
 var height = 30;
 var snake = [[15,20], [15, 21], [15, 22]];
 var comida = [];
 var direccion = "";
 var contador = 0;
+var time;
+var speed = 500;
 
-
-
+//lanzar funciones
 function lanzadera(){
     table();
     food();
 }
 window.onload = lanzadera;
 
-
+//crear cuadrícula
 function table(){
     var table = document.createElement("table");
     var tbody = document.createElement("tbody");
     var div = document.getElementById("table-body");
     table.style.background = "#125445";
-    
-
     for (var i = 0; i < height; i++){
         var tr = document.createElement("tr");
-
         for (var j=0; j < width; j++){
             var td = document.createElement("td");
             td.setAttribute("id", i +"-" + j);
@@ -37,17 +35,13 @@ function table(){
     }
     table.appendChild(tbody);
     div.appendChild(table);
-
- 
+    //dibujar posición snake inicialS
    for (var i=0; i<snake.length; i++){
         document.getElementById(snake[i][0]+"-"+snake[i][1]).style.background = "#000000";   
     }
 }
 
-
-
-
-
+//posicionar comida
 function generarComida(){
     var vertical=Math.floor(Math.random()* (height - 1)) +1;
     var horizontal=Math.floor(Math.random()* (width - 1)) +1;
@@ -56,6 +50,7 @@ function generarComida(){
     return comida;
 }
 
+//comida
 function food(){
     comida = generarComida();
     while (comprobarcomida(snake, comida)){
@@ -67,8 +62,8 @@ function food(){
     celda.style.background = "#FFFFFF";
     
 }
-  
-console.log(snake);
+
+//comprobar comida no esté en snake
 function comprobarcomida(snake, comida){
     console.log(snake);
     console.log(comida);
@@ -79,7 +74,7 @@ function comprobarcomida(snake, comida){
     }
 }
 
-
+//direcciones según teclas
 window.document.addEventListener("keydown", dire);
 function dire(key){
     switch(key.keyCode){
@@ -102,28 +97,25 @@ function dire(key){
     }
 }
 
-var time;
-var speed = 500;
-
+//empezar juego
 function start(){
     time = setInterval(mover, speed);
 }
 
+//cambio de velocidad
 function speedLevel(){
     if (contador%2==0){
         speed = speed - 50;
         time = setInterval(mover, speed)
         console.log("new speed: " + speed);
     }
-   
 }
 
+//mover snake
 function mover(){
     var nuevaPosicion = [];
-
     //calculo la nueva posicion
     switch(direccion){
-        
         case "L": //left
             console.log("left");
             if (snake[0][1] == 0){
@@ -133,17 +125,13 @@ function mover(){
             }
             nuevaPosicion[0] = snake[0][0];
             break;
-
         case "U": //up
-
             if (snake[0][0] == 0){
                 nuevaPosicion[0] = 29;
             }else{
                 nuevaPosicion[0] = snake[0][0]-1;
-  
             }
             nuevaPosicion[1] = snake[0][1];
-
             break;
         case "R": //right
             if (snake[0][1] == 39){
@@ -153,7 +141,6 @@ function mover(){
             }
             nuevaPosicion[0] = snake[0][0];
             break;
-
         case "D": //down
             if (snake[0][0] == 29){
                 nuevaPosicion[0] = 0;
@@ -161,7 +148,6 @@ function mover(){
                 nuevaPosicion[0] = snake[0][0]+1; 
             }
             nuevaPosicion[1] = snake[0][1];
-
             break;
         default:
             //empieza a moverse al iniciar el juego
@@ -172,36 +158,32 @@ function mover(){
                 nuevaPosicion[1] = snake[0][1]-1;
             }
             nuevaPosicion[0] = snake[0][0];
-
     }
+
     if (nuevaPosicion.length == 2){
         if (nuevaPosicion[0] == comida[0] && nuevaPosicion[1]== comida[1]){
             //ha comido
             snake.unshift(nuevaPosicion);
             //pintar nuevo elemento
             document.getElementById(snake[0][0]+"-"+snake[0][1]).style.background = "#000000"; 
+            //poner nueva comida
             food();
+            //subir velocidad
             contador++;
             speedLevel();
+            //añadir nivel al contador html
             document.getElementById("level").innerHTML = contador;
-            console.log(contador);
-            console.log("Comer");
-          
-        
-            
+            //console.log(contador);
+            //console.log("Comer");
         }
-       
+       //colisión con su propio cuerpo
         else if (checkcolision(snake, nuevaPosicion)) {
             document.getElementById(nuevaPosicion[0]+"-"+nuevaPosicion[1]).style.background = "red"; 
             console.log("Muerte");
-           
-        
         }else{
-
             //caso normal
-            //oculando snake
-            document.getElementById(snake[snake.length-1][0] + "-" + snake[snake.length-1][1]).style.background = "#125445";   
-
+            //ocultando snake
+            document.getElementById(snake[snake.length-1][0] + "-" + snake[snake.length-1][1]).style.background = "#125445";  
             // muevo posiciones
             for (var i = snake.length-1; i > 0; i--){
                 snake[i][0] = snake[i-1][0];
@@ -212,15 +194,13 @@ function mover(){
             //añadir nueva posicion
             snake[0][0] = nuevaPosicion[0];
             snake[0][1] = nuevaPosicion[1];
-
             //pintar nuevo elemento
             document.getElementById(snake[0][0]+"-"+snake[0][1]).style.background = "#000000";  
             console.log("Normal");
         }
     }
 }
-
-
+//colisión
 function checkcolision(s, n){
     for (var i  = 0; i < s.length; i++){
         if (n[0] == s[i][0] && n[1] == s[i][1]){
