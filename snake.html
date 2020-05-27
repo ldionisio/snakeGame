@@ -4,23 +4,17 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake</title>
-    
-	<!--<link rel="stylesheet" href="snake.css">-->
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body onload="lanzadera()">
-    <div>
-        <h1>Snake</h1>
-        <label>Score</label>
+    <div id="title">
+        <h1>Snake Game</h1>
+        <button id="food" onclick="start()">Start</button> <br>
+        <label>Level: </label><label id="level"></label>
     </div>
     <div id="table-body"></div>
-    <div>				
-        <button id="food" onclick="food()">Start</button>
-        <button class="" id="" onclick="">Reset</button>
-    </div>
   
     <script src="snake.js"></script>
-
-    
 </body>
 </html>

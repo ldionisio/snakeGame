@@ -3,6 +3,10 @@ var width = 40;
 var height = 30;
 var snake = [[15,20], [15, 21], [15, 22]];
 var comida = [];
+var direccion = "";
+var contador = 0;
+
+
 
 function lanzadera(){
     table();
@@ -38,62 +42,90 @@ function table(){
    for (var i=0; i<snake.length; i++){
         document.getElementById(snake[i][0]+"-"+snake[i][1]).style.background = "#000000";   
     }
-
-    
 }
 
 
-function food(){
+
+
+
+function generarComida(){
     var vertical=Math.floor(Math.random()* (height - 1)) +1;
     var horizontal=Math.floor(Math.random()* (width - 1)) +1;
-    
     comida[0] = vertical;
     comida[1] = horizontal;
-    
+    return comida;
+}
+
+function food(){
+    comida = generarComida();
+    while (comprobarcomida(snake, comida)){
+        comida = generarComida();
+    }
     var celda = document.getElementById(comida[0] + "-" + comida[1]);
+    console.log(comida[0]);
+    console.log(comida[1]);
     celda.style.background = "#FFFFFF";
-    console.log(celda);
-}  
-
-
-
-document.addEventListener ('keydown', function (event){
-    console.log (event.which);
-    console.log("tecla 38");
-}); 
- 
-var evt = new KeyboardEvent('keydown', {'keyCode':38, 'which':38});
-document.dispatchEvent (evt);
-
-
-
-
-
-
-window.document.addEventListener("keyup", speed);
-function speed() {
-    var speed;
-    console.log("se ha soltado la tecla");
-    var evento = window.event;
-    console.log(evento.keyCode);
-   
-    if(evento.keyCode == 37);
-        console.log("Vas a la izquierda");
-        
-
+    
+}
+  
+console.log(snake);
+function comprobarcomida(snake, comida){
+    console.log(snake);
+    console.log(comida);
+    for (var i=0; i<snake.length; i++){
+        if (comida[0] == snake[i][0] && comida[1] == snake[i][1]){
+            return true;
+        }
+    }
 }
 
 
-window.document.addEventListener("keydown", checkkey);
-function checkkey(key){
+window.document.addEventListener("keydown", dire);
+function dire(key){
+    switch(key.keyCode){
+            case 37: //left
+                direccion = 'L';
+                console.log("dirección: "+direccion);
+                break;
+            case 38: //up
+                direccion = 'U';
+                console.log("dirección: "+direccion);
+                break;
+            case 39: //right
+                direccion = 'R';
+                console.log("dirección: "+direccion);
+                break;
+            case 40: //down
+                direccion = 'D';
+                console.log("dirección: "+direccion);
+                break; 
+    }
+}
+
+var time;
+var speed = 500;
+
+function start(){
+    time = setInterval(mover, speed);
+}
+
+function speedLevel(){
+    if (contador%2==0){
+        speed = speed - 50;
+        time = setInterval(mover, speed)
+        console.log("new speed: " + speed);
+    }
+   
+}
+
+function mover(){
     var nuevaPosicion = [];
 
-
     //calculo la nueva posicion
-    switch(key.keyCode){
+    switch(direccion){
         
-        case 37: //left
-            
+        case "L": //left
+            console.log("left");
             if (snake[0][1] == 0){
                 nuevaPosicion[1] = 39;
             }else{
@@ -102,7 +134,7 @@ function checkkey(key){
             nuevaPosicion[0] = snake[0][0];
             break;
 
-        case 38: //up
+        case "U": //up
 
             if (snake[0][0] == 0){
                 nuevaPosicion[0] = 29;
@@ -113,7 +145,7 @@ function checkkey(key){
             nuevaPosicion[1] = snake[0][1];
 
             break;
-        case 39: //right
+        case "R": //right
             if (snake[0][1] == 39){
                 nuevaPosicion[1] = 0;
             }else{
@@ -122,7 +154,7 @@ function checkkey(key){
             nuevaPosicion[0] = snake[0][0];
             break;
 
-        case 40: //down
+        case "D": //down
             if (snake[0][0] == 29){
                 nuevaPosicion[0] = 0;
             }else{
@@ -130,7 +162,17 @@ function checkkey(key){
             }
             nuevaPosicion[1] = snake[0][1];
 
-            break; 
+            break;
+        default:
+            //empieza a moverse al iniciar el juego
+            console.log("left");
+            if (snake[0][1] == 0){
+                nuevaPosicion[1] = 39;
+            }else{
+                nuevaPosicion[1] = snake[0][1]-1;
+            }
+            nuevaPosicion[0] = snake[0][0];
+
     }
     if (nuevaPosicion.length == 2){
         if (nuevaPosicion[0] == comida[0] && nuevaPosicion[1]== comida[1]){
@@ -139,13 +181,20 @@ function checkkey(key){
             //pintar nuevo elemento
             document.getElementById(snake[0][0]+"-"+snake[0][1]).style.background = "#000000"; 
             food();
+            contador++;
+            speedLevel();
+            document.getElementById("level").innerHTML = contador;
+            console.log(contador);
             console.log("Comer");
+          
         
             
         }
+       
         else if (checkcolision(snake, nuevaPosicion)) {
             document.getElementById(nuevaPosicion[0]+"-"+nuevaPosicion[1]).style.background = "red"; 
             console.log("Muerte");
+           
         
         }else{
 
@@ -180,3 +229,4 @@ function checkcolision(s, n){
     }
     return false;
 }
+
