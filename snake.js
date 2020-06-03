@@ -4,9 +4,18 @@ var height = 30;
 var snake = [[15,20], [15, 21], [15, 22]];
 var comida = [];
 var direccion = "";
-var contador = 0;
+var contador = 0; //nivel (cada vez que come suma 1)
 var time;
-var speed = 500;
+var speed = 500; //milisegundos
+var velocidad = ''; //cambia de velocidad cada 2 niveles
+var score = 0; //puntuación
+//hora local
+var momentoActual = new Date();
+var hora = momentoActual.getHours();
+var minuto = momentoActual.getMinutes();
+var segundo = momentoActual.getSeconds();
+var horaprint = hora + " : " + minuto + " : " + segundo;
+
 
 //lanzar funciones
 function lanzadera(){
@@ -57,16 +66,15 @@ function food(){
         comida = generarComida();
     }
     var celda = document.getElementById(comida[0] + "-" + comida[1]);
-    console.log(comida[0]);
-    console.log(comida[1]);
+    //console.log(comida[0]);
+    //console.log(comida[1]);
     celda.style.background = "#FFFFFF";
-    
 }
 
 //comprobar comida no esté en snake
 function comprobarcomida(snake, comida){
-    console.log(snake);
-    console.log(comida);
+   // console.log(snake);
+    //console.log(comida);
     for (var i=0; i<snake.length; i++){
         if (comida[0] == snake[i][0] && comida[1] == snake[i][1]){
             return true;
@@ -80,19 +88,19 @@ function dire(key){
     switch(key.keyCode){
             case 37: //left
                 direccion = 'L';
-                console.log("dirección: "+direccion);
+                //console.log("dirección: "+direccion);
                 break;
             case 38: //up
                 direccion = 'U';
-                console.log("dirección: "+direccion);
+                //console.log("dirección: "+direccion);
                 break;
             case 39: //right
                 direccion = 'R';
-                console.log("dirección: "+direccion);
+               // console.log("dirección: "+direccion);
                 break;
             case 40: //down
                 direccion = 'D';
-                console.log("dirección: "+direccion);
+               // console.log("dirección: "+direccion);
                 break; 
     }
 }
@@ -104,10 +112,15 @@ function start(){
 
 //cambio de velocidad
 function speedLevel(){
+    //añadimos la puntauación
+    document.getElementById("score").innerHTML = score;
     if (contador%2==0){
         speed = speed - 50;
         time = setInterval(mover, speed)
-        console.log("new speed: " + speed);
+        //console.log("new speed: " + speed);
+        velocidad++;
+        //sumamaos más puntos por cambio de velocidad
+        score = score + 400;
     }
 }
 
@@ -170,16 +183,21 @@ function mover(){
             food();
             //subir velocidad
             contador++;
+            //sumamos 100 puntos
+            score = score + 100;
             speedLevel();
-            //añadir nivel al contador html
+            //añadir nivel al contador/velocidad html
             document.getElementById("level").innerHTML = contador;
-            //console.log(contador);
-            //console.log("Comer");
+            document.getElementById("velocidad").innerHTML = velocidad;
+  
         }
        //colisión con su propio cuerpo
         else if (checkcolision(snake, nuevaPosicion)) {
             document.getElementById(nuevaPosicion[0]+"-"+nuevaPosicion[1]).style.background = "red"; 
-            console.log("Muerte");
+           // console.log("Muerte");
+            muerte();
+            
+
         }else{
             //caso normal
             //ocultando snake
@@ -196,7 +214,8 @@ function mover(){
             snake[0][1] = nuevaPosicion[1];
             //pintar nuevo elemento
             document.getElementById(snake[0][0]+"-"+snake[0][1]).style.background = "#000000";  
-            console.log("Normal");
+           // console.log("Normal");
+
         }
     }
 }
@@ -209,4 +228,36 @@ function checkcolision(s, n){
     }
     return false;
 }
+
+//fin de juego (puntuación)
+function muerte(){
+    var tr = document.createElement("tr");
+    var horafinal = document.createElement("td");
+    var scorefinal = document.createElement("td");
+    var tablafinal = document.getElementById("result");
+    
+    tr.appendChild(horafinal);
+    tr.appendChild(scorefinal);
+    tablafinal.appendChild(tr);
+   
+    scorefinal.setAttribute("id", "scorefinal");
+    horafinal.setAttribute("id", 'horafinal');
+    
+    document.getElementById("horafinal").innerHTML = horaprint;
+    document.getElementById("scorefinal").innerHTML = score;
+
+    clearInterval(time);
+}
+
+//reiniciar juego
+function restart(){
+    //console.log("dentro de restart()");
+    location.reload();
+    
+    time = setInterval(mover, speed);
+
+}
+
+
+
 

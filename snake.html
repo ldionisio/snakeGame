@@ -12,9 +12,21 @@
         <h1>Snake Game</h1>
         <button id="food" onclick="start()">Start</button> <br>
         <label>Level: </label><label id="level"></label>
+        <label>Speed: </label><label id="velocidad"></label>
+        <label>Score: </label><label id="score"></label>
     </div>
-    <div id="table-body"></div>
-  
+    
+        <div id="table-body"></div>
+    
+        <p id="player">Player 1</p>
+        <table id="result">
+            <tr>
+            <th>Time</th>
+            <th>Score</th>
+            </tr>
+        </table>
+
+    <button id="restart" onclick="restart()">Play again</button>
     <script src="snake.js"></script>
 </body>
 </html>
