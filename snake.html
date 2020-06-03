@@ -8,25 +8,26 @@
 </head>
 
 <body onload="lanzadera()">
-    <div id="title">
-        <h1>Snake Game</h1>
-        <button id="food" onclick="start()">Start</button> <br>
+    <div class= "container">
+        
+        <h1 class="title">Snake Game</h1>
+        <button id="food" onclick="start()">START</button>
+        <button id="restart" onclick="restart()">RESET</button><br>
+       
         <label>Level: </label><label id="level"></label>
         <label>Speed: </label><label id="velocidad"></label>
-        <label>Score: </label><label id="score"></label>
-    </div>
-    
+        <label>Score: </label><label id="score"></label><br><br>
+
         <div id="table-body"></div>
-    
-        <p id="player">Player 1</p>
+        <p id="player"></p>
         <table id="result">
             <tr>
-            <th>Time</th>
-            <th>Score</th>
+                <th>Time</th>
+                <th>Score</th>
             </tr>
         </table>
-
-    <button id="restart" onclick="restart()">Play again</button>
+        
+    </div>
     <script src="snake.js"></script>
 </body>
 </html>

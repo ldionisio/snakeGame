@@ -1,39 +1,54 @@
 *{
-    margin: 0px;
-    padding: 0px;
+	padding: 0px;
+	list-style: none;
+	text-decoration: none;
+	font-family: Arial;
+
+
 }
 
-#title{
-    text-align: center;
-    padding: 30px;
-    font-family: cursive;
-}
+.container{
+	position: relative;
+	margin: auto; /*para que esté centrado*/
+	height: auto;
+	text-align: center;
 
-h1{
-    font-weight: bold;
-    color: #2F4F4F;
-    letter-spacing: 4px;
 }
 
 
-table{
-   margin: 0 auto;
-   text-align: center;
-   width: auto;
+.title{
+    color: green;
+    font-size: 42px;
+	font-family: fantasy;
+	letter-spacing: 8px;
+    
 }
 
 button{
     text-align: center;
     padding: 5px;
-    font-family: cursive;
-    margin: 10px;
+    margin: 5px;
     font-size: large;
-    color: rgba(255, 0, 0, 0.6);
+    color: white;
+    background: rgb(199, 122, 122);
 }
 
-#player
-{    margin: 0 auto;
-    text-align: center;
-    
+button:hover{
+    background: red;
 }
+
+
+#player{
+    text-align: center;
+    color: indigo;
+    font-weight: bold;
+}
+
+table{
+    margin: 0 auto;
+    text-align: center;
+	width: auto;
+	position: relative;
+	
+ }
 

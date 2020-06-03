@@ -21,8 +21,24 @@ var horaprint = hora + " : " + minuto + " : " + segundo;
 function lanzadera(){
     table();
     food();
+    name();
+    
 }
 window.onload = lanzadera;
+
+//pedir nombre
+function name(){
+    var name = prompt("Please, enter your name");
+    var player = "Player 1";
+    if(name!=null){
+        document.getElementById("player").innerHTML = name;
+        alert("Ready? 3, 2, 1...");
+        start();
+    }else{
+        document.getElementById("player").innerHTML = player;
+    }
+
+}
 
 //crear cuadrícula
 function table(){
@@ -251,13 +267,7 @@ function muerte(){
 
 //reiniciar juego
 function restart(){
-    //console.log("dentro de restart()");
     location.reload();
-    
     time = setInterval(mover, speed);
-
 }
-
-
-
 
